@@ -13,6 +13,7 @@
   "sourcePRLabels": ["backported-to-master"],
   "targetPRLabels": ["backport-pr"],
   "branchLabelMapping": {
-    "^backport-to-(.+)$": "$1"
+    "^backport-to-(.+)$": "$1",
+    "^backport-to-release-(.+)$": "release/$1"
   }
 }
