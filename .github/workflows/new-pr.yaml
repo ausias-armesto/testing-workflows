@@ -6,7 +6,7 @@ on:
     types:
       - opened
       - synchronize
-permissions: write-all
+
 jobs:
   draft:
     name: Adjust PR
@@ -44,7 +44,8 @@ jobs:
         env:
           PROJECT_NAME: "Roadmap"
           PROJECT_OWNER: ausias-armesto
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.COMMIT_BOT_ACCESS_TOKEN }}
 
       # - name: Auto assign PR
       #   uses: kentaro-m/auto-assign-action@v1.2.5
