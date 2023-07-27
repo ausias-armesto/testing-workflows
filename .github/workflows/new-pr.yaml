@@ -23,7 +23,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Backport PR
-        if: github.event.pull_request.base.ref == env.ACTIVE_RELEASE
+        run: |
+          echo "Active release1: ${ACTIVE_RELEASE}"
+          echo "Active release2: ${{ env.ACTIVE_RELEASE }}"
+          echo "Active release3: ${{ vars.ACTIVE_RELEASE }}"
+          echo "Base branch ref: ${{ github.event.pull_request.base.ref }}"
+
+      - name: Backport PR
+        if: github.event.pull_request.base.ref == vars.ACTIVE_RELEASE
         run: gh pr edit ${{ github.event.pull_request.number }} --add-label "backport master"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
