@@ -4,6 +4,10 @@ on:
       - release/providence
     types: 
       - closed
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+  pull-requests: write
 
 jobs:
   backport:
@@ -13,12 +17,16 @@ jobs:
       github.event.pull_request.merged == true
       && ! contains(github.event.pull_request.labels.*.name, 'skip-backport')
     steps:
+      - name: Checkout hoprnet repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Backport Action
         uses: sqren/backport-github-action@v8.9.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           auto_backport_label_prefix: backport-to-
-          add_original_reviewers: true
 
       - name: Info log
         if: ${{ success() }}
