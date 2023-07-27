@@ -17,6 +17,10 @@ jobs:
       - name: Checkout hoprnet repository
         uses: actions/checkout@v3
 
+      - name: Fetch
+        run: |
+          git fetch --all
+
       - name: Backport Action
         uses: sqren/backport-github-action@v8.9.3
         with:
