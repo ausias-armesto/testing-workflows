@@ -30,12 +30,12 @@ jobs:
       - name: Assign to project
         run: |
           set -x
-          ls -al
-          gh project list --format json
-          gh pr list --state closed
-          sleep 5
-          project_number=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).number')
-          project_id=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).id')
+          gh project list --owner ${{ env.PROJECT_OWNER }} --format json
+          sleep 3
+          gh auth token
+          sleep 3
+          project_number=$(gh project list --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).number')
+          project_id=$(gh project list --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).id')
           gh pr edit ${{ github.event.pull_request.number }} --add-project "${{ env.PROJECT_NAME }}"
           item_id=$(gh project item-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.items[] | select(.content.number == ${{ github.event.pull_request.number }}).id')
           status_field_id=$(gh project field-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.fields[] | select(.name | test("Status")).id')
