@@ -1,13 +1,14 @@
+name: Backport PR
 on:
   pull_request_target:
     branches:
       - release/providence
     types: 
       - closed
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
-  pull-requests: write
+# permissions:
+#   id-token: write # This is required for requesting the JWT
+#   contents: read  # This is required for actions/checkout
+#   pull-requests: write
 
 jobs:
   backport:
@@ -19,8 +20,6 @@ jobs:
     steps:
       - name: Checkout hoprnet repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Backport Action
         uses: sqren/backport-github-action@v8.9.3
