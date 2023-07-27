@@ -1,3 +1,4 @@
 Contents of file 3
 
 Modifying file 3 again
+Second commit
