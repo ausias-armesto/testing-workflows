@@ -30,9 +30,9 @@ jobs:
       - name: Assign to project
         run: |
           set -x
-          project_number=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ PROJECT_NAME }}")).number')
-          project_id=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ PROJECT_NAME }}")).id')
-          gh pr edit ${{ github.event.pull_request.number }} --add-project "${{ PROJECT_NAME }}"
+          project_number=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).number')
+          project_id=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).id')
+          gh pr edit ${{ github.event.pull_request.number }} --add-project "${{ env.PROJECT_NAME }}"
           item_id=$(gh project item-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.items[] | select(.content.number == ${{ github.event.pull_request.number }}).id')
           status_field_id=$(gh project field-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.fields[] | select(.name | test("Status")).id')
           status_field_in_progress_id=$(gh project field-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.fields[] | select(.name | test("Status")).options[] | select(.name | test("In Progress")).id')
@@ -40,6 +40,7 @@ jobs:
         env:
           PROJECT_NAME: "Roadmap"
           PROJECT_OWNER: ausias-armesto
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Auto assign PR
       #   uses: kentaro-m/auto-assign-action@v1.2.5
