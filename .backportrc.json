@@ -1,6 +1,10 @@
 {
   "repoOwner": "ausias-armesto",
   "repoName": "testing-workflows",
+  "targetBranchChoices": [
+    { "name": "release/providence", "checked": true },
+    "release/bratislava"
+  ],
   "author": null,
   "autoAssign": true,
   "prTitle": "[Backport] {commitMessages} backport for {targetBranch}",
