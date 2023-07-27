@@ -1,1 +1,3 @@
 Contents of file 2
+
+Test with workflow permissions
