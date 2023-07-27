@@ -1,8 +1,13 @@
 {
   "repoOwner": "ausias-armesto",
   "repoName": "testing-workflows",
-  "targetBranchChoices": [{ "name": "master", "checked": true }],
-  "branchLabelMapping": {
-    "^backport-to-(.+)$": "release/$1"
-  }
+  "author": null,
+  "autoAssign": true,
+  "prTitle": "[Backport] {commitMessages} backport for {targetBranch}",
+  "prDescription": "Backports the following the PR {commitMessages} to {targetBranch}",
+  "publishStatusCommentOnAbort": true,
+  "publishStatusCommentOnSuccess": true,
+  "publishStatusCommentOnFailure": true,
+  "sourcePRLabels": ["backported"],
+  "targetPRLabels": ["backport-pr"]
 }
