@@ -1,5 +1,3 @@
 Contents of file 3
 
 Modifying file 3 again
-
-First commit 1
