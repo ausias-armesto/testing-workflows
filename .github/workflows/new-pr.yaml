@@ -5,29 +5,41 @@ on:
   pull_request:
     types:
       - opened
-concurrency:
-  group: ${{ github.head_ref }}-new
-  cancel-in-progress: false
+      - synchronize
+
 jobs:
   draft:
     name: Adjust PR
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
     steps:
-      - name: Checkout hoprnet repository
-        uses: actions/checkout@v3
+      # - name: Checkout hoprnet repository
+      #   uses: actions/checkout@v3
 
-      - name: Convert PR to draft
-        run: gh pr ready ${{ github.event.pull_request.number }} --undo
+      # - name: Convert PR to draft
+      #   if: github.event.pull_request.draft == false
+      #   run: gh pr ready ${{ github.event.pull_request.number }} --undo
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Backport PR to master
+      #   if: github.event.pull_request.base.ref == vars.ACTIVE_RELEASE
+      #   run: gh pr edit ${{ github.event.pull_request.number }} --add-label "backport master"
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assign to project
+        run: |
+          set -x
+          project_number=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ PROJECT_NAME }}")).number')
+          project_id=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ PROJECT_NAME }}")).id')
+          gh pr edit ${{ github.event.pull_request.number }} --add-project "${{ PROJECT_NAME }}"
+          item_id=$(gh project item-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.items[] | select(.content.number == ${{ github.event.pull_request.number }}).id')
+          status_field_id=$(gh project field-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.fields[] | select(.name | test("Status")).id')
+          status_field_in_progress_id=$(gh project field-list ${project_number} --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.fields[] | select(.name | test("Status")).options[] | select(.name | test("In Progress")).id')
+          gh project item-edit --project-id ${project_id} --id ${item_id} --field-id ${status_field_id} --single-select-option-id ${status_field_in_progress_id}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "Roadmap"
+          PROJECT_OWNER: ausias-armesto
 
-      - name: Backport PR to master
-        if: github.event.pull_request.base.ref == vars.ACTIVE_RELEASE
-        run: gh pr edit ${{ github.event.pull_request.number }} --add-label "backport master"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Auto assign PR
-        uses: kentaro-m/auto-assign-action@v1.2.5
+      # - name: Auto assign PR
+      #   uses: kentaro-m/auto-assign-action@v1.2.5
