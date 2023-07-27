@@ -10,28 +10,24 @@ concurrency:
   cancel-in-progress: false
 jobs:
   draft:
-    name: Convert to draft
+    name: Adjust PR
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     steps:
       - name: Checkout hoprnet repository
         uses: actions/checkout@v3
 
-      - name: Convert to draft
+      - name: Convert PR to draft
         run: gh pr ready ${{ github.event.pull_request.number }} --undo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Backport PR
-        run: |
-          echo "Active release1: ${ACTIVE_RELEASE}"
-          echo "Active release2: ${{ env.ACTIVE_RELEASE }}"
-          echo "Active release3: ${{ vars.ACTIVE_RELEASE }}"
-          echo "Base branch ref: ${{ github.event.pull_request.base.ref }}"
-
-      - name: Backport PR
+      - name: Backport PR to master
         if: github.event.pull_request.base.ref == vars.ACTIVE_RELEASE
         run: gh pr edit ${{ github.event.pull_request.number }} --add-label "backport master"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
+
+      - name: Auto assign PR
+        uses: kentaro-m/auto-assign-action@v1.2.5
