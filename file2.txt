@@ -2,4 +2,4 @@ Contents of file 2
 
 Test with workflow permissions
 
-Seccond commit
+Other commit
