@@ -3,7 +3,6 @@
   "repoName": "testing-workflows",
   "targetBranchChoices": [{ "name": "master", "checked": true }],
   "branchLabelMapping": {
-    "^backport-to-(.+)$": "$1",
-    "^backport-to-release-(.+)$": "release/$1"
+    "^backport-to-(.+)$": "release/$1"
   }
 }
