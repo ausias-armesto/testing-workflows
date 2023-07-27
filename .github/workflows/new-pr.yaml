@@ -5,7 +5,6 @@ on:
   pull_request:
     types:
       - opened
-      - synchronize
 
 jobs:
   draft:
@@ -15,25 +14,20 @@ jobs:
       - name: Checkout hoprnet repository
         uses: actions/checkout@v3
 
-      # - name: Convert PR to draft
-      #   if: github.event.pull_request.draft == false
-      #   run: gh pr ready ${{ github.event.pull_request.number }} --undo
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Convert PR to draft
+        if: github.event.pull_request.draft == false
+        run: gh pr ready ${{ github.event.pull_request.number }} --undo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Backport PR to master
-      #   if: github.event.pull_request.base.ref == vars.ACTIVE_RELEASE
-      #   run: gh pr edit ${{ github.event.pull_request.number }} --add-label "backport master"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Backport PR to master
+        if: github.event.pull_request.base.ref == vars.ACTIVE_RELEASE
+        run: gh pr edit ${{ github.event.pull_request.number }} --add-label "backport master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Assign to project
         run: |
-          set -x
-          gh project list --owner ${{ env.PROJECT_OWNER }} --format json
-          sleep 3
-          gh auth token |  sed 's/./& /g' 
-          sleep 3
           project_number=$(gh project list --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).number')
           project_id=$(gh project list --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).id')
           gh pr edit ${{ github.event.pull_request.number }} --add-project "${{ env.PROJECT_NAME }}"
@@ -44,8 +38,7 @@ jobs:
         env:
           PROJECT_NAME: "Roadmap"
           PROJECT_OWNER: ausias-armesto
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.COMMIT_BOT_ACCESS_TOKEN }}
 
-      # - name: Auto assign PR
-      #   uses: kentaro-m/auto-assign-action@v1.2.5
+      - name: Auto assign PR
+        uses: kentaro-m/auto-assign-action@v1.2.5
