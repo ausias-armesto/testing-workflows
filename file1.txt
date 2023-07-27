@@ -1,11 +1,3 @@
 Contents of file 1
 
-  "author": null,
-  "autoAssign": true,
-  "prTitle": "{commitMessages} backport for {targetBranch}",
-  "prDescription": "Backports the following the PR {commitMessages} to {targetBranch}",
-  "publishStatusCommentOnAbort": true,
-  "publishStatusCommentOnSuccess": true,
-  "publishStatusCommentOnFailure": true,
-  "sourcePRLabels": ["backported-to-master"],
-  "targetPRLabels": ["backport-pr"],
+  
