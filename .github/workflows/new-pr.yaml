@@ -30,6 +30,8 @@ jobs:
       - name: Assign to project
         run: |
           set -x
+          ls -al
+          gh project list --format json
           project_number=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).number')
           project_id=$(gh project list --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).id')
           gh pr edit ${{ github.event.pull_request.number }} --add-project "${{ env.PROJECT_NAME }}"
