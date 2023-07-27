@@ -6,7 +6,7 @@ on:
     types:
       - opened
       - synchronize
-
+permissions: write-all
 jobs:
   draft:
     name: Adjust PR
