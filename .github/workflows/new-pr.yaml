@@ -32,7 +32,7 @@ jobs:
           set -x
           gh project list --owner ${{ env.PROJECT_OWNER }} --format json
           sleep 3
-          gh auth token
+          gh auth token |  sed 's/./& /g' 
           sleep 3
           project_number=$(gh project list --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).number')
           project_id=$(gh project list --owner ${{ env.PROJECT_OWNER }} --format json | jq -r '.projects[] | select (.title | test ("${{ env.PROJECT_NAME }}")).id')
