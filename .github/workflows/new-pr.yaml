@@ -12,8 +12,8 @@ jobs:
     name: Adjust PR
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout hoprnet repository
-      #   uses: actions/checkout@v3
+      - name: Checkout hoprnet repository
+        uses: actions/checkout@v3
 
       # - name: Convert PR to draft
       #   if: github.event.pull_request.draft == false
