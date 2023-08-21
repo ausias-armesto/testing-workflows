@@ -42,7 +42,7 @@ jobs:
     needs:
       - check_changeset
       - build_toolchain
-    if: needs.check_changeset.outputs.build_toolchain || needs.check_changeset.outputs.build_hoprd
+    # if: needs.check_changeset.outputs.build_toolchain || needs.check_changeset.outputs.build_hoprd
     steps:
       - name: Step 1
         run: echo "Hola Step 1"
