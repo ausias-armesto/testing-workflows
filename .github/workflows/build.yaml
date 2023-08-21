@@ -19,15 +19,10 @@ jobs:
       build_toolchain: ${{ steps.check_pr_changeset.outputs.build_toolchain }}
       build_hoprd: ${{ steps.check_pr_changeset.outputs.build_hoprd }}
     steps:
-      - name: Checkout hoprnet repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Check PR changes
         id: check_pr_changeset
         run: |
-          ./scripts/check-pr.sh --base-branch ${{ github.event.pull_request.base.sha }} --head-branch ${{ github.event.pull_request.head.sha }}
           # echo "build_toolchain=true" >> $GITHUB_OUTPUT # Not needed sometimes
           echo "build_hoprd=true" >> $GITHUB_OUTPUT
 
