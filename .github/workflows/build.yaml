@@ -13,7 +13,7 @@ concurrency:
 jobs:
   check_changeset:
     name: Check changeset
-    runs-on: ubuntu-2-core
+    runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     outputs:
       build_toolchain: ${{ steps.check_pr_changeset.outputs.build_toolchain }}
@@ -28,7 +28,7 @@ jobs:
 
   build_toolchain:
     name: Toolchain
-    runs-on: ubuntu-2-core
+    runs-on: ubuntu-latest
     needs:
       - check_changeset
     if: needs.check_changeset.outputs.build_toolchain
@@ -38,7 +38,7 @@ jobs:
 
   build_hoprd:
     name: Hoprd
-    runs-on: ubuntu-2-core
+    runs-on: ubuntu-latest
     needs:
       - check_changeset
       - build_toolchain
@@ -49,7 +49,7 @@ jobs:
 
   build_pluto:
     name: Pluto
-    runs-on: ubuntu-2-core
+    runs-on: ubuntu-latest
     needs:
       - check_changeset
       - build_hoprd
