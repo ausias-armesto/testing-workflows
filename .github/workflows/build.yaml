@@ -23,7 +23,7 @@ jobs:
       - name: Check PR changes
         id: check_pr_changeset
         run: |
-          # echo "build_toolchain=true" >> $GITHUB_OUTPUT # Not needed sometimes
+          echo "build_toolchain=true" >> $GITHUB_OUTPUT # Not needed sometimes
           echo "build_hoprd=true" >> $GITHUB_OUTPUT
 
   build_toolchain:
