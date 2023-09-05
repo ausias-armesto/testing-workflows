@@ -9,10 +9,10 @@ on:
         required: true
         description: 'Type of Release to create'
         options:
-          - Major
-          - Minor
-          - Patch
           - ReleaseCandidate
+          - Patch
+          - Minor
+          - Major
       release_name:
         type: choice
         required: true
@@ -28,7 +28,7 @@ jobs:
 
   create-release:
     name: Create Release
-    runs-on: ubuntu-latest-4-cores
+    runs-on: ubuntu-latest
     steps:
       - name: Setup environment variables
         id: setup
