@@ -57,5 +57,3 @@ jobs:
             pr_number=$(gh pr view --json number | jq -r '.number')
             gh pr review --approve
             gh pr merge --auto --delete-branch --squash
-            # --reviewer Teebor-Choka 
-            # --reviewer hoprnet/hopr-development
