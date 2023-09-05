@@ -74,3 +74,5 @@ jobs:
         run: |
             pr_number=$(gh pr view --json number | jq -r '.number')
             gh pr merge --auto --delete-branch --squash ${pr_number}
+        env:
+          GH_TOKEN: ${{ github.token }}
