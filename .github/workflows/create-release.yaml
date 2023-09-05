@@ -83,4 +83,4 @@ jobs:
         run: |
             echo '{ "title": "${{ steps.bump.outputs.next_version }}", "state": "open" }' | gh api --method POST repos/ausias-armesto/testing-workflows/milestones --input -
         env:
-          GH_TOKEN: ${{ secrets.COMMIT_BOT_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
