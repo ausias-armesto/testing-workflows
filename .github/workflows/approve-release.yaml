@@ -19,6 +19,7 @@ jobs:
 
       - name: Approve
         run: |
+          jq -r '.version' packages/connect/package.json
           gh pr review --approve
           gh pr merge --auto --delete-branch --squash 
         env:
