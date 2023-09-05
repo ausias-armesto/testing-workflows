@@ -67,6 +67,7 @@ jobs:
             delete-branch: true
             labels: release
             assignees: ${{ github.actor }}
+            reviewers: ausias-armesto
             #reviewers: hopr-version-bot
             #team-reviewers: hoprnet/hopr-development
 
@@ -74,8 +75,9 @@ jobs:
         run: |
             git fetch
             git checkout feature/create-${{ github.event.inputs.release_type }}-${{ steps.bump.outputs.next_version }}
+            gh pr review --approve
             gh pr merge --auto --delete-branch --squash
         # pr_number=$(gh pr view --json number | jq -r '.number')
         # ${pr_number}
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.COMMIT_BOT_ACCESS_TOKEN }}
