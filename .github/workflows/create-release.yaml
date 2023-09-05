@@ -1,0 +1,59 @@
+---
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        type: choice
+        required: true
+        description: 'Type of Release to create'
+        options:
+          - Major
+          - Minor
+          - Patch
+          - ReleaseCandidate
+      release_name:
+        type: choice
+        required: true
+        description: 'Name of the release'
+        options:
+          - providence
+
+concurrency:
+  group: create-release
+  cancel-in-progress: true
+
+jobs:
+
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest-4-cores
+    steps:
+      - name: Setup environment variables
+        id: setup
+        run: |
+            if [ "${{ github.event.inputs.release_type }}" == "Patch" ] then
+                base_branch="release/${release_name}"
+            else
+                base_branch="master"
+            fi
+            echo "base_branch=${base_branch}" >> $GITHUB_OUTPUT
+
+      - name: Checkout hoprnet repository
+        uses: actions/checkout@v3
+        with:
+          ref: "${{ steps.setup.outputs.base_branch }}"
+
+      - name: Create Pull Request
+        run: |
+            current_version=$(jq -r '.version' packages/hoprd/package.json)
+            next_version=$(./scripts/get-next-version.sh ${{ github.event.inputs.release_type }} current_version
+            git checkout -b feature/create-${{ github.event.inputs.release_type }}-${next_version}
+            ./scripts/bump-vesion.sh ${next_version}
+            git push --set-upstream origin feature/create-${{ github.event.inputs.release_type }}-${next_version}
+            gh pr create --title "Create release ${next_version}" --assignee ${{ github.actor }} --label release --reviewer hopr-bot --base ${{ steps.setup.outputs.base_branch }} --body "The scope of this PR is to create the contents of the new release ${next_version}"
+            gh pr review --approve
+            gh pr merge --auto --delete-branch --squash
+            # --reviewer Teebor-Choka 
+            # --reviewer hoprnet/hopr-development
