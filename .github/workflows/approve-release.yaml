@@ -4,16 +4,15 @@ name: Approve Release
 on:
   pull_request:
     types:
-      - opened
+      - labeled
 concurrency:
   group: approve-release
   cancel-in-progress: false
 jobs:
-  draft:
-    name: Convert to draft
+  approve:
+    name: Approve Release
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    if: contains(github.event.pull_request.labels.*.name, 'release')
+    if: contains(github.event.label.name, 'release')
     steps:
       - name: Checkout hoprnet repository
         uses: actions/checkout@v3
