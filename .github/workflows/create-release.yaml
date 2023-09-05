@@ -61,7 +61,7 @@ jobs:
         with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             message: "Bump version"
-            branch: feature/create-${{ github.event.inputs.release_type }}-${next_version}
+            branch: feature/create-${{ github.event.inputs.release_type }}-${{ steps.bump.outputs.next_version }}
 
       - name: Create Pull Request
         id: cpr
