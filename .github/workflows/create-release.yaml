@@ -33,7 +33,8 @@ jobs:
       - name: Setup environment variables
         id: setup
         run: |
-            if [ "${{ github.event.inputs.release_type }}" == "Patch" ] then
+            if [ "${{ github.event.inputs.release_type }}" == "Patch" ] 
+            then
                 base_branch="release/${release_name}"
             else
                 base_branch="master"
