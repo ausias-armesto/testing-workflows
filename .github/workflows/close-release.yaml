@@ -3,22 +3,7 @@ name: Close Release
 
 on:
   workflow_dispatch:
-    inputs:
-      release_type:
-        type: choice
-        required: true
-        description: 'Type of Release to create'
-        options:
-          - ReleaseCandidate
-          - Patch
-          - Minor
-          - Major
-      release_name:
-        type: choice
-        required: true
-        description: 'Name of the release'
-        options:
-          - providence
+
 
 concurrency:
   group: close-release
