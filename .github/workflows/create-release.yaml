@@ -72,7 +72,10 @@ jobs:
 
       - name: Enable Auto Merge
         run: |
-            pr_number=$(gh pr view --json number | jq -r '.number')
-            gh pr merge --auto --delete-branch --squash ${pr_number}
+            git fetch
+            git checkout feature/create-${{ github.event.inputs.release_type }}-${{ steps.bump.outputs.next_version }}
+            gh pr merge --auto --delete-branch --squash
+        # pr_number=$(gh pr view --json number | jq -r '.number')
+        # ${pr_number}
         env:
           GH_TOKEN: ${{ github.token }}
