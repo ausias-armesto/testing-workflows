@@ -51,8 +51,10 @@ jobs:
             next_version=$(./scripts/get-next-version.sh ${{ github.event.inputs.release_type }} current_version
             git checkout -b feature/create-${{ github.event.inputs.release_type }}-${next_version}
             ./scripts/bump-vesion.sh ${next_version}
+            git commit -m "Updating versions" .
             git push --set-upstream origin feature/create-${{ github.event.inputs.release_type }}-${next_version}
             gh pr create --title "Create release ${next_version}" --assignee ${{ github.actor }} --label release --reviewer hopr-bot --base ${{ steps.setup.outputs.base_branch }} --body "The scope of this PR is to create the contents of the new release ${next_version}"
+            pr_number=$(gh pr view --json number | jq -r '.number')
             gh pr review --approve
             gh pr merge --auto --delete-branch --squash
             # --reviewer Teebor-Choka 
