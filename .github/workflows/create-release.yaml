@@ -50,7 +50,7 @@ jobs:
         run: |
             set -x
             current_version=$(jq -r '.version' packages/hoprd/package.json)
-            next_version=$(./scripts/get-next-version.sh ${{ github.event.inputs.release_type }} current_version)
+            next_version=$(./scripts/get-next-version.sh ${{ github.event.inputs.release_type }} ${current_version})
             git checkout -b feature/create-${{ github.event.inputs.release_type }}-${next_version}
             ./scripts/bump-vesion.sh ${next_version}
             git commit -m "Updating versions" .
