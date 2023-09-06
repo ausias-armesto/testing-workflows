@@ -1,7 +1,7 @@
 Configuration backport for feature
 
   "author": null,
-  "autoAssign": false,
+  "autoAssign": true,
   "prTitle": "{commitMessages} backport for {targetBranch}",
   "prDescription": "Backports the following the PR {commitMessages} to {targetBranch}",
   "publishStatusCommentOnAbort": true,
