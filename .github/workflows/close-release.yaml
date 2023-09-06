@@ -20,9 +20,9 @@ jobs:
       - name: Choose template
         id: template
         run: |
-          set -x
           current_version=$(jq -r '.version' packages/hoprd/package.json)
-          if [[ "${{ github.ref_name }}" = "master" ]] && [[ ${current_version} == *"-rc."* ]]
+          # Choose the template file
+          if [[ "${{ github.ref_name }}" = "master" ]] && [[ ${current_version} == *"-rc.1" ]]
           then 
             echo "pr_template=pr-close-release.md" >> $GITHUB_OUTPUT
           else
@@ -30,7 +30,7 @@ jobs:
           fi
           echo "current_version=${current_version}" >> $GITHUB_OUTPUT
           milestone_number=$(gh api repos/${{ github.repository }}/milestones | jq -r --arg version "${current_version}"  ' to_entries[] | select(.value.title | test($version)).value.number')
-          ./scripts/generate-changelog.sh ${milestone_number} > changelog-${current_version}.md
+          ./scripts/generate-changelog.sh ${milestone_number} > docs/changelog/changelog-${current_version}.md
 
         env:
           GH_TOKEN: ${{ github.token }}
@@ -45,14 +45,6 @@ jobs:
             delete-branch: true
             labels: release
             assignees: ${{ github.actor }}
-            reviewers: ausias-armesto
             #reviewers: hopr-version-bot
             #team-reviewers: hoprnet/hopr-development
 
-      - name: Enable Auto Merge
-        run: |
-            git fetch
-            git checkout feature/close-${{ steps.template.outputs.current_version }}
-            gh pr merge --auto --delete-branch --squash
-        env:
-          GH_TOKEN: ${{ secrets.COMMIT_BOT_ACCESS_TOKEN }}

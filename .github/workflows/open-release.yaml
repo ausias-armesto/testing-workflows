@@ -49,9 +49,7 @@ jobs:
       - name: Bump Version
         id: bump
         run: |
-            set -x
-            current_version=$(jq -r '.version' packages/hoprd/package.json)
-            next_version=$(./scripts/get-next-version.sh ${{ github.event.inputs.release_type }} ${current_version})
+            next_version=$(./scripts/get-next-version.sh ${{ github.event.inputs.release_type }}
             ./scripts/bump-version.sh ${next_version}
             echo "next_version=${next_version}" >> $GITHUB_OUTPUT
 
