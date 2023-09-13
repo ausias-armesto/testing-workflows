@@ -14,7 +14,7 @@ usage() {
 # return early with help info when requested
 { [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; } && { usage; exit 0; }
 
-# set log id and use shared log function for readable logs
+# set mydir
 declare mydir
 mydir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
